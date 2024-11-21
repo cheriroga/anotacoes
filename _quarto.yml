@@ -9,6 +9,8 @@ website:
     left:
       - text: "Sobre"
         href: about.qmd
+    right: 
+      - text: "github"
 format:
   html:
     theme: cosmo

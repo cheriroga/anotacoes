@@ -1,8 +1,9 @@
 ---
-title: "Relátorio de Modelos Poluentes"
-format: html
+title: "Relátorio - Indicadores Ambientais e Bronquite Aguda"
 toc: true
 ---
+
+# Pré-requisitos
 
 ## Bibliotecas
 
@@ -11,6 +12,7 @@ require(glarma)
 require(performance)
 require(kableExtra)
 require(tidyverse)
+require(Hmisc)
 ```
 
 ## Base de Dados
@@ -19,16 +21,14 @@ require(tidyverse)
 df <- read.delim("Data_CPDO.txt")
 ```
 
-## Matrix of Correlation
+# Escolhendo as variáveis preditoras
+
+## Correlação
 
 ```{r}
-require(Hmisc)
-```
+poluentes <- df[, 1:9]
 
-```{r}
-a <- df[, 1:9]
-
-matrix <-  rcorr(as.matrix(a))
+matrix <-  rcorr(as.matrix(poluentes))
 
 cor_matrix <- matrix$r
 
@@ -38,19 +38,41 @@ cor_matrix[lower.tri(cor_matrix, diag = TRUE)] <- ""
 p_value_matrix[lower.tri(p_value_matrix, diag = TRUE)] <- ""
 ```
 
-```{r}
-cor_matrix %>% 
-  kable("html", align = "c") %>% 
-  kable_styling()
+Usando a função `rcorr` do pacote `Hmisc`, é possivel criar uma tabela de correlação entre a variável resposta (bronquite aguda) e as variáveis preditoras (poluentes).
+
+```{r,echo=FALSE}
+cor_matrix %>%
+  kable("html", align = "c") %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
 ```
 
-```{r}
+A matrix apresenta as correlações entre diferentes variáveis ambientais e de saúde, com foco na relação com a bronquite aguda. Os coeficientes de correlação variam de -1 a 1, indicando a força e a direção da relação entre duas variáveis.
+
+-   A bronquite aguda está positivamente correlacionada com poluentes como $\text{NO}$ e $\text{NOX}$, o que reforça a ligação entre poluição atmosférica e problemas respiratórios.
+-   Níveis de $\text{O3}$ têm uma correlação negativa com bronquite aguda, indicando que pode haver um efeito protetor em certos contextos.
+-   A **umidade relativa** apresenta relação moderada com poluentes e saúde, possivelmente modulando a dispersão de partículas no ar.
+
+## Valor-p
+
+```{r,echo=FALSE}
 p_value_matrix %>%
   kable("html", align = "c") %>% 
-  kable_styling()
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
 ```
 
-## NO
+A matriz de valores-p foi utilizada para avaliar a significância estatística das correlações observadas anteriormente. Valores-p menores que **0,05** indicam uma relação estatisticamente significativa, enquanto valores maiores sugerem que a correlação pode ser atribuída ao acaso.
+
+-   As relações entre $\text{NO}$ e bronquite aguda ($\text{p = 0,0059}$) e entre $\text{O3}$ e bronquite aguda ( $\text{p = 0,0012}$) são as mais significativas.
+
+-   Poluentes como $\text{PM}$ e $\text{NO}$ mostram forte interação com variáveis ambientais como umidade e temperatura, mas nem todas têm impacto direto na saúde com significância estatística.
+
+-   Embora várias variáveis tenham correlações aparentes com a bronquite aguda, apenas algumas relações são estatisticamente robustas.
+
+-   A relação entre $\text{umidade relativa}$ e poluentes como $\text{PM10}$ é estatisticamente significativa e pode influenciar a dispersão de partículas no ar.
+
+# Ajustes
+
+## **NO** (Óxido de Nitrogenio) como variável preditora
 
 ```{r}
 y <- df[,1]
@@ -60,34 +82,6 @@ Trend <- 1:84
 Intercepto <- rep(1,84)
 X1 <- cbind(Intercepto, Trend, X1, df$cos6, df$cos12, df$sen6, df$sen12)
 colnames(X1) <- c("Intercepto", "Trend", "NO", "cos6", "cos12", "sen6", "sen12")
-```
-
-### GLARMA Poisson
-
-```{r}
-glarma_poi <- glarma(y, X1, thetaLags = NULL, phiLags = 1, type = "Poi",
-                     method = "FS", residuals= "Pearson",
-                     maxit = 100, grad = 1e-6)
-
-```
-
-```{r}
-summary(glarma_poi)
-```
-
-```{r}
-glarma_poi
-```
-
-```{r}
-par(mfrow = c(2, 1))
-acf(glarma_poi$residuals)
-pacf(glarma_poi$residuals)
-```
-
-```{r}
-par(mfrow=c(2,3))
-plot(glarma_poi)
 ```
 
 ### GLARMA Binomial Negativo
@@ -102,9 +96,28 @@ glarma_nb <- glarma(y, X1, thetaLags = NULL, phiLags = 1, type = "NegBin",
 summary(glarma_nb)
 ```
 
-```{r}
-glarma_nb
-```
+O modelo GLARMA com distribuição Binomial Negativa foi ajustado para capturar as características estruturais e temporais dos dados de contagem analisados. Os resultados indicam que o modelo é estatisticamente robusto e apropriado para os dados, conforme evidenciado pelos seguintes pontos principais:
+
+1.  **Adequação do modelo Binomial Negativa:**\
+    O parâmetro de dispersão ($\alpha = 14.813$, $p < 0.001$) demonstra que os dados apresentam superdispersão significativa, justificando a escolha da distribuição Binomial Negativa em vez da Poisson.
+
+2.  **Dependência temporal:**\
+    O coeficiente ($\phi_1= 0.22406$, $p < 0.001$) confirma a presença de dependência temporal nos dados, com eventos passados influenciando os valores futuros. Isso valida a necessidade do componente autorregressivo do modelo GLARMA.
+
+3.  **Impacto das variáveis explicativas:**
+
+    -   A tendência ($\text{Trend} = 0.00851$ , $p < 0.001$) indica um aumento consistente na contagem esperada ao longo do tempo.
+    -   A variável ($\text{NO} = 0.01964$, $p = 0.00195$ ) tem um impacto positivo significativo, aumentando a contagem esperada.
+    -   Os componentes sazonais ($\cos(12)$, $\sin(6)$ e $\sin(12)$ são altamente significativos, confirmando a presença de padrões sazonais nos dados.
+
+4.  **Qualidade do ajuste:**\
+    O modelo apresenta uma redução substancial na deviance residual (98.288) em relação à deviance nula (361.607), indicando que ele explica bem os dados. Além disso, o menor AIC (687.92) em comparação ao modelo Poisson sugere que o modelo Binomial Negativa é mais adequado para capturar a variabilidade nos dados.
+
+5.  **Validação do modelo GLARMA:**\
+    Os testes de razão de verossimilhança (LRT) e de Wald ($p < 0.001$) indicam que o modelo GLARMA é significativamente superior a um modelo GLM simples com a mesma estrutura de regressão.
+
+**Resumo:**\
+O modelo GLARMA com Binomial Negativa ajustou adequadamente os dados, capturando tanto a superdispersão quanto a dependência temporal. As variáveis sazonais e a tendência mostraram-se fatores determinantes para explicar a variabilidade nas contagens, reforçando a relevância do modelo para a análise dos dados. A ausência de correlações nos resíduos sugere que as estruturas remanescentes foram bem modeladas, tornando o modelo adequado para interpretações e previsões confiáveis.
 
 ```{r}
 par(mfrow = c(2, 1))
@@ -112,12 +125,14 @@ acf(glarma_nb$residuals)
 pacf(glarma_nb$residuals)
 ```
 
+Os gráficos de ACF e PACF dos resíduos do modelo GLARMA mostram que as autocorrelações estão dentro das bandas de confiança. Isso indica que os resíduos não apresentam correlação significativa entre os atrasos e se comportam como um ruído branco. Portanto, podemos concluir que o modelo capturou adequadamente as dependências temporais e estruturais presentes nos dados.
+
 ```{r}
 par(mfrow=c(2,3))
 plot(glarma_nb)
 ```
 
-## NOX
+## **NOX** (Óxidos de Nitrogênio) como variável preditora
 
 ```{r}
 y <- df[,1]
@@ -141,9 +156,27 @@ glarma_nb <- glarma(y, X2, thetaLags = NULL, phiLags = 1, type = "NegBin",
 summary(glarma_nb)
 ```
 
-```{r}
-glarma_nb
-```
+
+O modelo GLARMA com distribuição Binomial Negativa foi ajustado para examinar os dados de contagem, considerando tanto a superdispersão quanto a dependência temporal. A análise dos resultados revela os seguintes pontos principais:
+
+1.  **Adequação do modelo Binomial Negativa:**
+    -   O parâmetro de dispersão $\alpha = 14.813$ (p-valor $< 0.001$) indica que os dados apresentam superdispersão significativa, o que justifica a escolha da distribuição Binomial Negativa em vez da Poisson. A alta significância deste parâmetro reforça a presença de variabilidade excessiva nos dados.
+2.  **Dependência temporal:**
+    -   O coeficiente $\phi_1 = 0.22406$ (p-valor $< 0.001$) é significativamente positivo, sugerindo que há uma dependência temporal entre os valores, ou seja, os valores passados influenciam os valores futuros, o que é característico de um modelo GLARMA.
+3.  **Impacto das variáveis explicativas:**
+    -   **Intercepto (3.1803,** $p < 2e-16$): O valor do intercepto é altamente significativo, indicando o nível de contagem esperado quando todas as outras variáveis independentes são zero.
+    -   **Trend (0.00851,** $p = 1.18e-05$): A variável de tendência é significativa e sugere que a contagem esperada aumenta de forma constante ao longo do tempo.
+    -   **NO (0.01964,** $p = 0.00195$): A variável $\text{NO}$ tem um impacto positivo significativo na contagem esperada, aumentando-a em aproximadamente 1.98% por unidade de aumento em $\text{NO}$.
+    -   **cos6 (-0.0656,** $p = 0.278$): A variável $\cos(6)$ não apresenta significância estatística, sugerindo que o padrão sazonal com período de 6 unidades não afeta de forma relevante a contagem.
+    -   **cos12 (-0.4547,** $p < 2e-16$): A variável $\cos(12)$ apresenta um impacto significativo, indicando que o padrão sazonal com período de 12 unidades reduz a contagem esperada.
+    -   **sen6 (-0.3160,** $p = 2.82e-08$) e **sen12 (0.4662,** $p = 1.86e-13$): Ambas as variáveis sazonais são altamente significativas. O termo $\sin(6)$ reduz a contagem esperada, enquanto $\sin(12)$ a aumenta, sugerindo efeitos sazonais opostos.
+4.  **Qualidade do ajuste:**
+    -   A **deviance nula** (361.607) e a **deviance residual** (98.288) indicam que o modelo conseguiu explicar uma parte substancial da variabilidade nos dados. A diferença significativa entre essas duas deviance sugere um bom ajuste.
+    -   O **AIC = 687.92** é comparativamente baixo, indicando que o modelo Binomial Negativa se ajusta bem aos dados em relação a alternativas mais simples, como o modelo Poisson.
+5.  **Validação do modelo GLARMA:**
+    -   O **teste de razão de verossimilhança (LRT)** e o **teste de Wald** (ambos com p-valores $< 0.001$) demonstram que o modelo GLARMA é significativamente superior a um modelo GLM simples com a mesma estrutura de regressão, justificando a escolha do modelo GLARMA para capturar a dependência temporal nos dados.
+
+**Resumo:** O modelo GLARMA com Binomial Negativa apresentou um bom ajuste aos dados, com a identificação de superdispersão e dependência temporal significativa. As variáveis explicativas, como a tendência, $\text{NOX}$, e os componentes sazonais, desempenham papéis cruciais na explicação da variabilidade nas contagens. A presença de uma dependência temporal significativa foi confirmada pelo coeficiente $\phi_1$. A ausência de correlação nos resíduos e os bons resultados nos testes de validação indicam que o modelo é robusto e adequado para análise e previsão dos dados.
 
 ```{r}
 par(mfrow = c(2, 1))
@@ -151,12 +184,14 @@ acf(glarma_nb$residuals)
 pacf(glarma_nb$residuals)
 ```
 
+Os gráficos de ACF e PACF dos resíduos do modelo GLARMA mostram que as autocorrelações estão dentro das bandas de confiança. Isso indica que os resíduos não apresentam correlação significativa entre os atrasos e se comportam como um ruído branco. Portanto, podemos concluir que o modelo capturou adequadamente as dependências temporais e estruturais presentes nos dados.
+
 ```{r}
 par(mfrow=c(2,3))
 plot(glarma_nb)
 ```
 
-## NO e NOX
+## **NO** e **NOX** como variáveis preditoras
 
 ```{r}
 y <- df[,1]
@@ -172,7 +207,7 @@ colnames(X3) <- c("Intercepto", "Trend", "NO", "NOX", "cos6", "cos12", "sen6", "
 ### GLARMA Binomial Negativo
 
 ```{r}
-glarma_nb <- glarma(y, X3, thetaLags = NULL, phiLags = c(1,6) , type = "NegBin",
+glarma_nb <- glarma(y, X3, thetaLags = NULL, phiLags = c(3,12), type = "NegBin",
                     method = "FS", residuals= "Pearson",
                     maxit = 100, grad = 1e-6)
 ```
@@ -181,15 +216,15 @@ glarma_nb <- glarma(y, X3, thetaLags = NULL, phiLags = c(1,6) , type = "NegBin",
 summary(glarma_nb)
 ```
 
-```{r}
-glarma_nb
-```
+
 
 ```{r}
 par(mfrow = c(2, 1))
 acf(glarma_nb$residuals)
 pacf(glarma_nb$residuals)
 ```
+
+Os gráficos de ACF e PACF dos resíduos do modelo GLARMA mostram que as autocorrelações estão dentro das bandas de confiança. Isso indica que os resíduos não apresentam correlação significativa entre os atrasos e se comportam como um ruído branco. Portanto, podemos concluir que o modelo capturou adequadamente as dependências temporais e estruturais presentes nos dados.
 
 ```{r}
 par(mfrow=c(2,3))

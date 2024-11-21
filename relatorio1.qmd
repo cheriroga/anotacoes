@@ -1,18 +1,22 @@
 ---
-title: "Relátorio de Modelos para Casos de Poliomielite"
-format: 
+title: "Relátorio - Casos de Poliomielite"
 toc: true
 ---
 
-# Pré-Requisitos
+# Pré-requisitos
+
+## Bibliotecas
 
 ```{r pre_requisitos, results='hide', message=F, warning=F}
 library(glarma)
 library(tidyverse)
 library(performance)
 library(MASS)
+```
 
-## Dados
+## Base de dados
+
+```{r}
 data(Polio)
 ```
 

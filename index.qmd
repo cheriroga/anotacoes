@@ -4,6 +4,6 @@ title: "Relatórios IC"
 
 ## Relátorios
 
-[Relatório Ajustes Polio](relatorio1.qmd)
+[Relatório - Casos de Poliomielite](relatorio1.qmd)
 
-[Relatório Modelos Poluentes](relatorio2.qmd)
+[Relatório - Indicadores Ambientais e Bronquite Aguda](relatorio2.qmd)
