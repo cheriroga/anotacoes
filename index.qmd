@@ -1,0 +1,9 @@
+---
+title: "Relatórios IC"
+---
+
+## Relátorios
+
+[Relatório Ajustes Polio](relatorio1.qmd)
+
+[Relatório Modelos Poluentes](relatorio2.qmd)
