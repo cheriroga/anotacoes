@@ -9,8 +9,9 @@ website:
     left:
       - text: "Sobre"
         href: about.qmd
-    right: 
-      - text: "github"
+    right:
+      - icon: github
+        href: https://github.com/cheriroga/relatorios
 format:
   html:
     theme: cosmo
