@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.5.56">
+<meta name="generator" content="quarto-1.5.57">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -191,6 +191,7 @@ window.Quarto = {
   <ul class="collapse">
   <li><a href="#correlação" id="toc-correlação" class="nav-link" data-scroll-target="#correlação">Correlação</a></li>
   <li><a href="#valor-p" id="toc-valor-p" class="nav-link" data-scroll-target="#valor-p">Valor-p</a></li>
+  <li><a href="#plot" id="toc-plot" class="nav-link" data-scroll-target="#plot">Plot</a></li>
   </ul></li>
   <li><a href="#ajustes" id="toc-ajustes" class="nav-link" data-scroll-target="#ajustes">Ajustes</a>
   <ul class="collapse">
@@ -229,10 +230,9 @@ window.Quarto = {
 <h3 class="anchored" data-anchor-id="bibliotecas">Bibliotecas</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(glarma)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(performance)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(kableExtra)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(tidyverse)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(Hmisc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(kableExtra)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(tidyverse)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(Hmisc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="base-de-dados" class="level3">
@@ -395,8 +395,8 @@ window.Quarto = {
 </div>
 <p>A matrix apresenta as correlações entre diferentes variáveis ambientais e de saúde, com foco na relação com a bronquite aguda. Os coeficientes de correlação variam de -1 a 1, indicando a força e a direção da relação entre duas variáveis.</p>
 <ul>
-<li>A bronquite aguda está positivamente correlacionada com poluentes como <span class="math inline">\(\text{NO}\)</span> e <span class="math inline">\(\text{NOX}\)</span>, o que reforça a ligação entre poluição atmosférica e problemas respiratórios.</li>
-<li>Níveis de <span class="math inline">\(\text{O3}\)</span> têm uma correlação negativa com bronquite aguda, indicando que pode haver um efeito protetor em certos contextos.</li>
+<li>A bronquite aguda está positivamente correlacionada com poluentes como <strong>NO</strong> e <strong>NOX</strong>, o que reforça a ligação entre poluição atmosférica e problemas respiratórios.</li>
+<li>Níveis de <strong>O3</strong> têm uma correlação negativa com bronquite aguda, indicando que pode haver um efeito protetor em certos contextos.</li>
 <li>A <strong>umidade relativa</strong> apresenta relação moderada com poluentes e saúde, possivelmente modulando a dispersão de partículas no ar.</li>
 </ul>
 </section>
@@ -538,11 +538,24 @@ window.Quarto = {
 </div>
 <p>A matriz de valores-p foi utilizada para avaliar a significância estatística das correlações observadas anteriormente. Valores-p menores que <strong>0,05</strong> indicam uma relação estatisticamente significativa, enquanto valores maiores sugerem que a correlação pode ser atribuída ao acaso.</p>
 <ul>
-<li><p>As relações entre <span class="math inline">\(\text{NO}\)</span> e bronquite aguda (<span class="math inline">\(\text{p = 0,0059}\)</span>) e entre <span class="math inline">\(\text{O3}\)</span> e bronquite aguda ( <span class="math inline">\(\text{p = 0,0012}\)</span>) são as mais significativas.</p></li>
-<li><p>Poluentes como <span class="math inline">\(\text{PM10}\)</span> e <span class="math inline">\(\text{NO}\)</span> mostram forte interação com variáveis ambientais como umidade e temperatura, mas nem todas têm impacto direto na saúde com significância estatística.</p></li>
+<li><p>As relações entre <strong>NO</strong> e bronquite aguda (<strong>p = 0,0059</strong>) e entre <strong>O3</strong> e bronquite aguda (<strong>p = 0,0012</strong>) são as mais significativas.</p></li>
+<li><p>Poluentes como <strong>PM10</strong> e <strong>NO</strong> mostram forte interação com variáveis ambientais como umidade e temperatura, mas nem todas têm impacto direto na saúde com significância estatística.</p></li>
 <li><p>Embora várias variáveis tenham correlações aparentes com a bronquite aguda, apenas algumas relações são estatisticamente robustas.</p></li>
-<li><p>A relação entre <span class="math inline">\(\text{umidade relativa}\)</span> e poluentes como <span class="math inline">\(\text{PM10}\)</span> é estatisticamente significativa e pode influenciar a dispersão de partículas no ar.</p></li>
+<li><p>A relação entre <strong>umidade relativa</strong> e poluentes como <strong>PM10</strong> é estatisticamente significativa e pode influenciar a dispersão de partículas no ar.</p></li>
 </ul>
+</section>
+<section id="plot" class="level3">
+<h3 class="anchored" data-anchor-id="plot">Plot</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(poluentes)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="relatorio2_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
 </section>
 </section>
 <section id="ajustes" class="level2">
@@ -550,22 +563,22 @@ window.Quarto = {
 <section id="no-óxido-de-nitrogenio-como-variável-preditora" class="level3">
 <h3 class="anchored" data-anchor-id="no-óxido-de-nitrogenio-como-variável-preditora"><strong>NO</strong> (Óxido de Nitrogenio) como variável preditora</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> df[,<span class="dv">1</span>]</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>X1 <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(df[,<span class="dv">4</span>])</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>Trend <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">84</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>Intercepto <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">1</span>,<span class="dv">84</span>)</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>X1 <span class="ot">&lt;-</span> <span class="fu">cbind</span>(Intercepto, Trend, X1, df<span class="sc">$</span>cos6, df<span class="sc">$</span>cos12, df<span class="sc">$</span>sen6, df<span class="sc">$</span>sen12)</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(X1) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Intercepto"</span>, <span class="st">"Trend"</span>, <span class="st">"NO"</span>, <span class="st">"cos6"</span>, <span class="st">"cos12"</span>, <span class="st">"sen6"</span>, <span class="st">"sen12"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> df[,<span class="dv">1</span>]</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>X1 <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(df[,<span class="dv">4</span>])</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>Trend <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">84</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>Intercepto <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">1</span>,<span class="dv">84</span>)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>X1 <span class="ot">&lt;-</span> <span class="fu">cbind</span>(Intercepto, Trend, X1, df<span class="sc">$</span>cos6, df<span class="sc">$</span>cos12, df<span class="sc">$</span>sen6, df<span class="sc">$</span>sen12)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(X1) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Intercepto"</span>, <span class="st">"Trend"</span>, <span class="st">"NO"</span>, <span class="st">"cos6"</span>, <span class="st">"cos12"</span>, <span class="st">"sen6"</span>, <span class="st">"sen12"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <section id="glarma-binomial-negativo" class="level4">
 <h4 class="anchored" data-anchor-id="glarma-binomial-negativo">GLARMA Binomial Negativo</h4>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>glarma_nb <span class="ot">&lt;-</span> <span class="fu">glarma</span>(y, X1, <span class="at">thetaLags =</span> <span class="cn">NULL</span>, <span class="at">phiLags =</span> <span class="dv">1</span>, <span class="at">type =</span> <span class="st">"NegBin"</span>,</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>                    <span class="at">method =</span> <span class="st">"FS"</span>, <span class="at">residuals=</span> <span class="st">"Pearson"</span>,</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>                    <span class="at">maxit =</span> <span class="dv">100</span>, <span class="at">grad =</span> <span class="fl">1e-6</span>)</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(glarma_nb)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>glarma_nb <span class="ot">&lt;-</span> <span class="fu">glarma</span>(y, X1, <span class="at">thetaLags =</span> <span class="cn">NULL</span>, <span class="at">phiLags =</span> <span class="dv">1</span>, <span class="at">type =</span> <span class="st">"NegBin"</span>,</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>                    <span class="at">method =</span> <span class="st">"FS"</span>, <span class="at">residuals=</span> <span class="st">"Pearson"</span>,</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>                    <span class="at">maxit =</span> <span class="dv">100</span>, <span class="at">grad =</span> <span class="fl">1e-6</span>)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(glarma_nb)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call: glarma(y = y, X = X1, type = "NegBin", method = "FS", residuals = "Pearson", 
@@ -618,7 +631,7 @@ O coeficiente (<span class="math inline">\(\phi_1= 0.22406\)</span>, <span class
 <li><p><strong>Impacto das variáveis explicativas:</strong></p>
 <ul>
 <li>A tendência (<span class="math inline">\(\text{Trend} = 0.00851\)</span> , <span class="math inline">\(p &lt; 0.001\)</span>) indica um aumento consistente na contagem esperada ao longo do tempo.</li>
-<li>A variável (<span class="math inline">\(\text{NO} = 0.01964\)</span>, <span class="math inline">\(p = 0.00195\)</span> ) tem um impacto positivo significativo, aumentando a contagem esperada.</li>
+<li>A variável (<strong>NO</strong> = 0.01964, <span class="math inline">\(p = 0.00195\)</span> ) tem um impacto positivo significativo, aumentando a contagem esperada.</li>
 <li>Os componentes sazonais (<span class="math inline">\(\cos(12)\)</span>, <span class="math inline">\(\sin(6)\)</span> e <span class="math inline">\(\sin(12)\)</span> são altamente significativos, confirmando a presença de padrões sazonais nos dados.</li>
 </ul></li>
 <li><p><strong>Qualidade do ajuste:</strong><br>
@@ -628,25 +641,25 @@ Os testes de razão de verossimilhança (LRT) e de Wald (<span class="math inlin
 </ol>
 <p>O modelo GLARMA com Binomial Negativa ajustou adequadamente os dados, capturando tanto a superdispersão quanto a dependência temporal. As variáveis sazonais e a tendência mostraram-se fatores determinantes para explicar a variabilidade nas contagens, reforçando a relevância do modelo para a análise dos dados. A ausência de correlações nos resíduos sugere que as estruturas remanescentes foram bem modeladas, tornando o modelo adequado para interpretações e previsões confiáveis.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">1</span>))</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">acf</span>(glarma_nb<span class="sc">$</span>residuals)</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">pacf</span>(glarma_nb<span class="sc">$</span>residuals)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">1</span>))</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">acf</span>(glarma_nb<span class="sc">$</span>residuals)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">pacf</span>(glarma_nb<span class="sc">$</span>residuals)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="relatorio2_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="relatorio2_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 <p>Os gráficos de ACF e PACF dos resíduos do modelo GLARMA mostram que as autocorrelações estão dentro das bandas de confiança. Isso indica que os resíduos não apresentam correlação significativa entre os atrasos e se comportam como um ruído branco. Portanto, podemos concluir que o modelo capturou adequadamente as dependências temporais e estruturais presentes nos dados.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">3</span>))</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(glarma_nb)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">3</span>))</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(glarma_nb)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="relatorio2_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="relatorio2_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -665,21 +678,21 @@ Os testes de razão de verossimilhança (LRT) e de Wald (<span class="math inlin
 <section id="nox-óxidos-de-nitrogênio-como-variável-preditora" class="level3">
 <h3 class="anchored" data-anchor-id="nox-óxidos-de-nitrogênio-como-variável-preditora"><strong>NOX</strong> (Óxidos de Nitrogênio) como variável preditora</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> df[,<span class="dv">1</span>]</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>X2 <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(df[,<span class="dv">6</span>])</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>Trend <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">84</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>Intercepto <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">1</span>,<span class="dv">84</span>)</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>X2 <span class="ot">&lt;-</span> <span class="fu">cbind</span>(Intercepto, Trend, X2, df<span class="sc">$</span>cos6, df<span class="sc">$</span>cos12, df<span class="sc">$</span>sen6, df<span class="sc">$</span>sen12)</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(X2) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Intercepto"</span>, <span class="st">"Trend"</span>, <span class="st">"NOX"</span>, <span class="st">"cos6"</span>, <span class="st">"cos12"</span>, <span class="st">"sen6"</span>, <span class="st">"sen12"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> df[,<span class="dv">1</span>]</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>X2 <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(df[,<span class="dv">6</span>])</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>Trend <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">84</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>Intercepto <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">1</span>,<span class="dv">84</span>)</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>X2 <span class="ot">&lt;-</span> <span class="fu">cbind</span>(Intercepto, Trend, X2, df<span class="sc">$</span>cos6, df<span class="sc">$</span>cos12, df<span class="sc">$</span>sen6, df<span class="sc">$</span>sen12)</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(X2) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Intercepto"</span>, <span class="st">"Trend"</span>, <span class="st">"NOX"</span>, <span class="st">"cos6"</span>, <span class="st">"cos12"</span>, <span class="st">"sen6"</span>, <span class="st">"sen12"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <section id="glarma-binomial-negativo-1" class="level4">
 <h4 class="anchored" data-anchor-id="glarma-binomial-negativo-1">GLARMA Binomial Negativo</h4>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>glarma_nb <span class="ot">&lt;-</span> <span class="fu">glarma</span>(y, X2, <span class="at">thetaLags =</span> <span class="cn">NULL</span>, <span class="at">phiLags =</span> <span class="dv">1</span>, <span class="at">type =</span> <span class="st">"NegBin"</span>,</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>                    <span class="at">method =</span> <span class="st">"FS"</span>, <span class="at">residuals=</span> <span class="st">"Pearson"</span>,</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>                    <span class="at">maxit =</span> <span class="dv">100</span>, <span class="at">grad =</span> <span class="fl">1e-6</span>)</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(glarma_nb)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>glarma_nb <span class="ot">&lt;-</span> <span class="fu">glarma</span>(y, X2, <span class="at">thetaLags =</span> <span class="cn">NULL</span>, <span class="at">phiLags =</span> <span class="dv">1</span>, <span class="at">type =</span> <span class="st">"NegBin"</span>,</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>                    <span class="at">method =</span> <span class="st">"FS"</span>, <span class="at">residuals=</span> <span class="st">"Pearson"</span>,</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>                    <span class="at">maxit =</span> <span class="dv">100</span>, <span class="at">grad =</span> <span class="fl">1e-6</span>)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(glarma_nb)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call: glarma(y = y, X = X2, type = "NegBin", method = "FS", residuals = "Pearson", 
@@ -737,7 +750,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <ul>
 <li><strong>Intercepto (3.1803,</strong> <span class="math inline">\(p &lt; 2e-16\)</span>): O valor do intercepto é altamente significativo, indicando o nível de contagem esperado quando todas as outras variáveis independentes são zero.</li>
 <li><strong>Trend (0.00851,</strong> <span class="math inline">\(p = 1.18e-05\)</span>): A variável de tendência é significativa e sugere que a contagem esperada aumenta de forma constante ao longo do tempo.</li>
-<li><strong>NO (0.01964,</strong> <span class="math inline">\(p = 0.00195\)</span>): A variável <span class="math inline">\(\text{NO}\)</span> tem um impacto positivo significativo na contagem esperada, aumentando-a em aproximadamente 1.98% por unidade de aumento em <span class="math inline">\(\text{NO}\)</span>.</li>
+<li><strong>NO (0.01964,</strong> <span class="math inline">\(p = 0.00195\)</span>): A variável <strong>NO</strong> tem um impacto positivo significativo na contagem esperada, aumentando-a em aproximadamente 1.98% por unidade de aumento em <strong>NO</strong>.</li>
 <li><strong>cos6 (-0.0656,</strong> <span class="math inline">\(p = 0.278\)</span>): A variável <span class="math inline">\(\cos(6)\)</span> não apresenta significância estatística, sugerindo que o padrão sazonal com período de 6 unidades não afeta de forma relevante a contagem.</li>
 <li><strong>cos12 (-0.4547,</strong> <span class="math inline">\(p &lt; 2e-16\)</span>): A variável <span class="math inline">\(\cos(12)\)</span> apresenta um impacto significativo, indicando que o padrão sazonal com período de 12 unidades reduz a contagem esperada.</li>
 <li><strong>sen6 (-0.3160,</strong> <span class="math inline">\(p = 2.82e-08\)</span>) e <strong>sen12 (0.4662,</strong> <span class="math inline">\(p = 1.86e-13\)</span>): Ambas as variáveis sazonais são altamente significativas. O termo <span class="math inline">\(\sin(6)\)</span> reduz a contagem esperada, enquanto <span class="math inline">\(\sin(12)\)</span> a aumenta, sugerindo efeitos sazonais opostos.</li>
@@ -752,27 +765,27 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <li>O <strong>teste de razão de verossimilhança (LRT)</strong> e o <strong>teste de Wald</strong> (ambos com p-valores <span class="math inline">\(&lt; 0.001\)</span>) demonstram que o modelo GLARMA é significativamente superior a um modelo GLM simples com a mesma estrutura de regressão, justificando a escolha do modelo GLARMA para capturar a dependência temporal nos dados.</li>
 </ul></li>
 </ol>
-<p>O modelo GLARMA com Binomial Negativa apresentou um bom ajuste aos dados, com a identificação de superdispersão e dependência temporal significativa. As variáveis explicativas, como a tendência, <span class="math inline">\(\text{NOX}\)</span>, e os componentes sazonais, desempenham papéis cruciais na explicação da variabilidade nas contagens. A presença de uma dependência temporal significativa foi confirmada pelo coeficiente <span class="math inline">\(\phi_1\)</span>. A ausência de correlação nos resíduos e os bons resultados nos testes de validação indicam que o modelo é robusto e adequado para análise e previsão dos dados.</p>
+<p>O modelo GLARMA com Binomial Negativa apresentou um bom ajuste aos dados, com a identificação de superdispersão e dependência temporal significativa. As variáveis explicativas, como a tendência, <strong>NOX</strong>, e os componentes sazonais, desempenham papéis cruciais na explicação da variabilidade nas contagens. A presença de uma dependência temporal significativa foi confirmada pelo coeficiente <span class="math inline">\(\phi_1\)</span>. A ausência de correlação nos resíduos e os bons resultados nos testes de validação indicam que o modelo é robusto e adequado para análise e previsão dos dados.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">1</span>))</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">acf</span>(glarma_nb<span class="sc">$</span>residuals)</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="fu">pacf</span>(glarma_nb<span class="sc">$</span>residuals)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">1</span>))</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">acf</span>(glarma_nb<span class="sc">$</span>residuals)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="fu">pacf</span>(glarma_nb<span class="sc">$</span>residuals)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="relatorio2_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="relatorio2_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 <p>Os gráficos de ACF e PACF dos resíduos do modelo GLARMA mostram que as autocorrelações estão dentro das bandas de confiança. Isso indica que os resíduos não apresentam correlação significativa entre os atrasos e se comportam como um ruído branco. Portanto, podemos concluir que o modelo capturou adequadamente as dependências temporais e estruturais presentes nos dados.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">3</span>))</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(glarma_nb)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">3</span>))</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(glarma_nb)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="relatorio2_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="relatorio2_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -792,24 +805,22 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <section id="no-e-nox-como-variáveis-preditoras" class="level3">
 <h3 class="anchored" data-anchor-id="no-e-nox-como-variáveis-preditoras"><strong>NO</strong> e <strong>NOX</strong> como variáveis preditoras</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> df[,<span class="dv">1</span>]</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>X1 <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(df[,<span class="dv">4</span>])</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>X2 <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(df[,<span class="dv">7</span>])</span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>Trend <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">84</span></span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>Intercepto <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">1</span>,<span class="dv">84</span>)</span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>X3 <span class="ot">&lt;-</span> <span class="fu">cbind</span>(Intercepto, Trend, X1, X2, df<span class="sc">$</span>cos6, df<span class="sc">$</span>cos12, df<span class="sc">$</span>sen6, df<span class="sc">$</span>sen12)</span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(X3) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Intercepto"</span>, <span class="st">"Trend"</span>, <span class="st">"NO"</span>, <span class="st">"O3"</span>, <span class="st">"cos6"</span>, <span class="st">"cos12"</span>, <span class="st">"sen6"</span>, <span class="st">"sen12"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> df[,<span class="dv">1</span>]</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>X1 <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(df[,<span class="dv">4</span>])</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>X2 <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(df[,<span class="dv">6</span>])</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>Trend <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">84</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>Intercepto <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">1</span>,<span class="dv">84</span>)</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>X3 <span class="ot">&lt;-</span> <span class="fu">cbind</span>(Intercepto, Trend, X1, X2, df<span class="sc">$</span>cos6, df<span class="sc">$</span>cos12, df<span class="sc">$</span>sen6, df<span class="sc">$</span>sen12)</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(X3) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Intercepto"</span>, <span class="st">"Trend"</span>, <span class="st">"NO"</span>, <span class="st">"NOX"</span>, <span class="st">"cos6"</span>, <span class="st">"cos12"</span>, <span class="st">"sen6"</span>, <span class="st">"sen12"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <section id="glarma-binomial-negativo-2" class="level4">
 <h4 class="anchored" data-anchor-id="glarma-binomial-negativo-2">GLARMA Binomial Negativo</h4>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>glarma_nb <span class="ot">&lt;-</span> <span class="fu">glarma</span>(y, X3, <span class="at">thetaLags =</span> <span class="cn">NULL</span>, <span class="at">phiLags =</span> <span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">12</span>), <span class="at">type =</span> <span class="st">"NegBin"</span>,</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>                    <span class="at">method =</span> <span class="st">"FS"</span>, <span class="at">residuals=</span> <span class="st">"Pearson"</span>,</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>                    <span class="at">maxit =</span> <span class="dv">100</span>, <span class="at">grad =</span> <span class="fl">1e-6</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(glarma_nb)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>glarma_nb <span class="ot">&lt;-</span> <span class="fu">glarma</span>(y, X3, <span class="at">thetaLags =</span> <span class="cn">NULL</span>, <span class="at">phiLags =</span> <span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">12</span>), <span class="at">type =</span> <span class="st">"NegBin"</span>,</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>                    <span class="at">method =</span> <span class="st">"FS"</span>, <span class="at">residuals=</span> <span class="st">"Pearson"</span>,</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>                    <span class="at">maxit =</span> <span class="dv">100</span>, <span class="at">grad =</span> <span class="fl">1e-6</span>)</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(glarma_nb)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call: glarma(y = y, X = X3, type = "NegBin", method = "FS", residuals = "Pearson", 
@@ -817,68 +828,43 @@ Call: glarma(y = y, X = X3, type = "NegBin", method = "FS", residuals = "Pearson
 
 Pearson Residuals:
     Min       1Q   Median       3Q      Max  
--1.6391  -0.8543  -0.0158   0.9772   3.6886  
+-1.9624  -0.7549  -0.0808   0.6277   3.7652  
 
 Negative Binomial Parameter:
-      Estimate Std.Error z-ratio Pr(&gt;|z|)   
-alpha    8.908     2.911    3.06  0.00221 **
+      Estimate Std.Error z-ratio Pr(&gt;|z|)    
+alpha   11.552     2.607   4.431 9.38e-06 ***
 
 GLARMA Coefficients:
-       Estimate Std.Error z-ratio Pr(&gt;|z|)  
-phi_3  -0.02492   0.03338  -0.747   0.4552  
-phi_12 -0.06751   0.03447  -1.959   0.0502 .
+       Estimate Std.Error z-ratio Pr(&gt;|z|)
+phi_3  -0.03995   0.04294  -0.931    0.352
+phi_12 -0.04056   0.05293  -0.766    0.444
 
 Linear Model Coefficients:
             Estimate Std.Error z-ratio Pr(&gt;|z|)    
-Intercepto  3.409108  0.189199  18.019  &lt; 2e-16 ***
-Trend       0.007727  0.001413   5.468 4.54e-08 ***
-NO          0.027952  0.009071   3.082  0.00206 ** 
-O3         -0.020023  0.010468  -1.913  0.05576 .  
-cos6       -0.185255  0.059546  -3.111  0.00186 ** 
-cos12      -0.385247  0.059535  -6.471 9.74e-11 ***
-sen6       -0.377309  0.057725  -6.536 6.30e-11 ***
-sen12       0.410284  0.066029   6.214 5.18e-10 ***
+Intercepto  3.083088  0.172199  17.904  &lt; 2e-16 ***
+Trend       0.007071  0.001764   4.009 6.09e-05 ***
+NO          0.022969  0.037817   0.607    0.544    
+NOX         0.004795  0.019272   0.249    0.804    
+cos6       -0.079612  0.072645  -1.096    0.273    
+cos12      -0.392647  0.080972  -4.849 1.24e-06 ***
+sen6       -0.372129  0.066112  -5.629 1.81e-08 ***
+sen12       0.503213  0.058195   8.647  &lt; 2e-16 ***
 
-    Null deviance: 363.88  on 83  degrees of freedom
-Residual deviance: 106.41  on 73  degrees of freedom
-AIC: 720.2555 
+    Null deviance: 361.679  on 83  degrees of freedom
+Residual deviance:  85.251  on 73  degrees of freedom
+AIC: 713.4604 
 
 Number of Fisher Scoring iterations: 100
 
 LRT and Wald Test:
 Alternative hypothesis: model is a GLARMA process
 Null hypothesis: model is a GLM with the same regression structure
-          Statistic p-value  
-LR Test      -3.767  1.0000  
-Wald Test     4.783  0.0915 .
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+          Statistic p-value
+LR Test       3.609   0.165
+Wald Test     1.735   0.420</code></pre>
 </div>
 </div>
-<p>Como o <strong>NO</strong> e o <strong>NOX</strong> tem alta correlação, o ajuste do modelo usando as duas variáveis é inviavél.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">1</span>))</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">acf</span>(glarma_nb<span class="sc">$</span>residuals)</span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="fu">pacf</span>(glarma_nb<span class="sc">$</span>residuals)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="relatorio2_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">3</span>))</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(glarma_nb)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="relatorio2_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
+<p>Como o <strong>NO</strong> e o <strong>NOX</strong> apresentam alta correlação, o ajuste do modelo usando ambas as variáveis é inviável devido à multicolinearidade, que pode distorcer as estimativas e reduzir a interpretabilidade. Considerando que nenhuma das duas variáveis foi estatisticamente significativa no modelo ajustado (p = 0,544 para NO e p = 0,804 para NOX), podemos usar os ajustes alternativos com apenas uma dessas variáveis ou explorar formas de combinar ambas (criar um índice ou usar análise de componentes principais).</p>
 
 
 </section>
