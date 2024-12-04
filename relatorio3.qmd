@@ -1,0 +1,95 @@
+---
+title: "relatorio3"
+toc: true
+---
+
+### Bibliotecas
+
+```{r, results='hide', message=F, warning=F}
+library(corrr)
+library(ggcorrplot)
+library(FactoMineR)
+library(factoextra)
+```
+
+
+## Explorando dos dados
+
+
+### Dados dos poluentes   
+
+```{r}
+df <- read.delim("Data_CPDO.txt")
+poluentes <- df[, 2:9]
+```
+
+
+### Calcular a matriz de correlação
+
+```{r}
+corr_matrix <- cor(as.matrix(poluentes))
+ggcorrplot(corr_matrix)
+```
+
+
+## Aplicação de PCA
+
+```{r}
+data.pca <- princomp(corr_matrix)
+summary(data.pca)
+```
+
+## Visualização dos componentes principais 
+
+### Gráfico Scree
+
+```{r}
+fviz_eig(data.pca, addlabels = TRUE)
+```
+
+### Biplot dos atributos
+
+```{r}
+fviz_pca_var(data.pca, col.var = "black")
+```
+
+### Contribuição de cada variável 
+
+```{r}
+fviz_cos2(data.pca, choice = "var", axes = 1:2)
+```
+### Biplot combinado com cos2 
+
+```{r}
+fviz_pca_var(data.pca, col.var = "cos2",
+            gradient.cols = c("black", "orange", "green"),
+            repel = TRUE)
+```
+
+
+
+
+
+# Resultado PCA
+```{r}
+pca_result <- prcomp(poluentes, center = TRUE, scale. = TRUE)
+
+# Selecionar os primeiros componentes principais (com base em variância explicada, por exemplo)
+variancia_explicada <- summary(pca_result)$importance[2, ]  # Proporção da variância explicada
+num_componentes <- which(cumsum(variancia_explicada) >= 0.8)[1]  # 80% da variância explicada
+pca_vars <- pca_result$x[, 1:num_componentes]  # Seleciona os componentes principais
+
+```
+
+```{r}
+# Suponha que sua variável resposta seja `y` (primeira coluna do conjunto de dados)
+y <- df[, 1]
+
+# Preparar o novo conjunto de dados
+df_pca <- data.frame(y, pca_vars)
+```
+
+```{r}
+```
+
+

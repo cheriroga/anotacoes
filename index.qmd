@@ -1,8 +1,5 @@
 ---
 title: "Relatórios IC"
-project:
-  type: website
-  output-dir: docs
 ---
 
 ## Relátorios
@@ -10,3 +7,5 @@ project:
 -   [Relatório - Casos de Poliomielite](relatorio1.qmd)
 
 -   [Relatório - Indicadores Ambientais e Bronquite Aguda](relatorio2.qmd)
+
+-   [Relatório - PCA](relatorio3.qmd)

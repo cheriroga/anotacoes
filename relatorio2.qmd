@@ -241,4 +241,4 @@ glarma_nb <- glarma(y, X3, thetaLags = NULL, phiLags = c(3,12), type = "NegBin",
 summary(glarma_nb)
 ```
 
-Como o **NO** e o **NOX** apresentam alta correlação, o ajuste do modelo usando ambas as variáveis é inviável devido à multicolinearidade, que pode distorcer as estimativas e reduzir a interpretabilidade. Considerando que nenhuma das duas variáveis foi estatisticamente significativa no modelo ajustado (p = 0,544 para NO e p = 0,804 para NOX), podemos usar os ajustes alternativos com apenas uma dessas variáveis ou explorar formas de combinar ambas (criar um índice ou usar análise de componentes principais).
+Como o **NO** e o **NOX** apresentam alta correlação, o ajuste do modelo usando ambas as variáveis é inviável devido à multicolinearidade, que pode distorcer as estimativas e reduzir a interpretabilidade. Considerando que nenhuma das duas variáveis foi estatisticamente significativa no modelo ajustado (p = 0,544 para NO e p = 0,804 para NOX), podemos usar os ajustes alternativos com apenas uma dessas variáveis ou explorar formas de combinar ambas (análise de componentes principais).
