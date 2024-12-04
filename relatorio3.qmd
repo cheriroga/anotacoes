@@ -12,17 +12,14 @@ library(FactoMineR)
 library(factoextra)
 ```
 
-
 ## Explorando dos dados
 
-
-### Dados dos poluentes   
+### Dados dos poluentes
 
 ```{r}
 df <- read.delim("Data_CPDO.txt")
 poluentes <- df[, 2:9]
 ```
-
 
 ### Calcular a matriz de correlação
 
@@ -31,7 +28,6 @@ corr_matrix <- cor(as.matrix(poluentes))
 ggcorrplot(corr_matrix)
 ```
 
-
 ## Aplicação de PCA
 
 ```{r}
@@ -39,7 +35,7 @@ data.pca <- princomp(corr_matrix)
 summary(data.pca)
 ```
 
-## Visualização dos componentes principais 
+## Visualização dos componentes principais
 
 ### Gráfico Scree
 
@@ -53,12 +49,13 @@ fviz_eig(data.pca, addlabels = TRUE)
 fviz_pca_var(data.pca, col.var = "black")
 ```
 
-### Contribuição de cada variável 
+### Contribuição de cada variável
 
 ```{r}
 fviz_cos2(data.pca, choice = "var", axes = 1:2)
 ```
-### Biplot combinado com cos2 
+
+### Biplot combinado com cos2
 
 ```{r}
 fviz_pca_var(data.pca, col.var = "cos2",
@@ -66,11 +63,8 @@ fviz_pca_var(data.pca, col.var = "cos2",
             repel = TRUE)
 ```
 
-
-
-
-
 # Resultado PCA
+
 ```{r}
 pca_result <- prcomp(poluentes, center = TRUE, scale. = TRUE)
 
@@ -91,5 +85,3 @@ df_pca <- data.frame(y, pca_vars)
 
 ```{r}
 ```
-
-
