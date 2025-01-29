@@ -94,7 +94,7 @@ ggcorrplot(corr_matrix)
 
 ## GLARMA
 
-#### Poi
+### Poi
 
 ```{r}
 glarma_poi <- glarma(y, df_complicado, thetaLags = NULL, phiLags = 1, type = "Poi",
@@ -116,9 +116,10 @@ par(mfrow=c(2,3))
 plot(glarma_poi)
 ```
 
-#### NegBin
+### NegBin
 
 ```{r}
+
 glarma_nb <- glarma(y, df_complicado, thetaLags = 1, phiLags = NULL, type = "NegBin",
                     method = "FS", residuals= "Pearson",
                     maxit = 100, grad = 1e-6)
