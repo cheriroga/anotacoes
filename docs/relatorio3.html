@@ -183,7 +183,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </ul></li>
   <li><a href="#resultado-pca" id="toc-resultado-pca" class="nav-link" data-scroll-target="#resultado-pca">Resultado PCA</a>
   <ul class="collapse">
-  <li><a href="#glarma" id="toc-glarma" class="nav-link" data-scroll-target="#glarma">GLARMA</a></li>
+  <li><a href="#glarma" id="toc-glarma" class="nav-link" data-scroll-target="#glarma">GLARMA</a>
+  <ul class="collapse">
+  <li><a href="#poi" id="toc-poi" class="nav-link" data-scroll-target="#poi">Poi</a></li>
+  <li><a href="#negbin" id="toc-negbin" class="nav-link" data-scroll-target="#negbin">NegBin</a></li>
+  </ul></li>
   </ul></li>
   </ul>
 </nav>
@@ -428,59 +432,69 @@ Cumulative Proportion  0.999956327 1.000000e+00      1</code></pre>
 84  0.99776282  1.56740345  0.232734416  0.85905121</code></pre>
 </div>
 </div>
-<section id="glarma" class="level2">
-<h2 class="anchored" data-anchor-id="glarma">GLARMA</h2>
-<section id="poi" class="level4">
-<h4 class="anchored" data-anchor-id="poi">Poi</h4>
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>glarma_poi <span class="ot">&lt;-</span> <span class="fu">glarma</span>(y, df_complicado, <span class="at">thetaLags =</span> <span class="dv">1</span>, <span class="at">phiLags =</span> <span class="cn">NULL</span>, <span class="at">type =</span> <span class="st">"Poi"</span>,</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>                    <span class="at">method =</span> <span class="st">"FS"</span>, <span class="at">residuals=</span> <span class="st">"Pearson"</span>,</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>                    <span class="at">maxit =</span> <span class="dv">100</span>, <span class="at">grad =</span> <span class="fl">1e-6</span>)</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(glarma_poi)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>corr_matrix <span class="ot">&lt;-</span> <span class="fu">cor</span>(df_complicado)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggcorrplot</span>(corr_matrix)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="relatorio3_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<section id="glarma" class="level2">
+<h2 class="anchored" data-anchor-id="glarma">GLARMA</h2>
+<section id="poi" class="level3">
+<h3 class="anchored" data-anchor-id="poi">Poi</h3>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>glarma_poi <span class="ot">&lt;-</span> <span class="fu">glarma</span>(y, df_complicado, <span class="at">thetaLags =</span> <span class="cn">NULL</span>, <span class="at">phiLags =</span> <span class="dv">1</span>, <span class="at">type =</span> <span class="st">"Poi"</span>,</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>                    <span class="at">method =</span> <span class="st">"FS"</span>, <span class="at">residuals=</span> <span class="st">"Pearson"</span>,</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>                    <span class="at">maxit =</span> <span class="dv">100</span>, <span class="at">grad =</span> <span class="fl">1e-6</span>)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(glarma_poi)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call: glarma(y = y, X = df_complicado, type = "Poi", method = "FS", 
-    residuals = "Pearson", phiLags = NULL, thetaLags = 1, maxit = 100, 
+    residuals = "Pearson", phiLags = 1, thetaLags = NULL, maxit = 100, 
     grad = 1e-06)
 
 Pearson Residuals:
-   Min      1Q  Median      3Q     Max  
--4.694  -1.707   0.064   1.325   9.512  
+    Min       1Q   Median       3Q      Max  
+-4.7316  -1.6451  -0.0355   1.2965   9.3735  
 
 GLARMA Coefficients:
-        Estimate Std.Error z-ratio Pr(&gt;|z|)    
-theta_1 0.067458  0.004947   13.63   &lt;2e-16 ***
+      Estimate Std.Error z-ratio Pr(&gt;|z|)    
+phi_1 0.070152  0.005125   13.69   &lt;2e-16 ***
 
 Linear Model Coefficients:
-           Estimate  Std.Error z-ratio Pr(&gt;|z|)    
-PC1      -0.1741940  0.0156628 -11.121  &lt; 2e-16 ***
-PC2      -0.0723606  0.0258941  -2.794   0.0052 ** 
-PC3      -0.0826158  0.0145867  -5.664 1.48e-08 ***
-PC4      -0.0862355  0.0301241  -2.863   0.0042 ** 
-Temp_min  0.1227630  0.0139110   8.825  &lt; 2e-16 ***
-RH        0.0204220  0.0041484   4.923 8.53e-07 ***
-sen12     0.4739309  0.0460516  10.291  &lt; 2e-16 ***
-cos12    -0.5132344  0.0516942  -9.928  &lt; 2e-16 ***
-sen6     -0.3500986  0.0322274 -10.863  &lt; 2e-16 ***
-cos6     -0.0581750  0.0350609  -1.659   0.0971 .  
-Trend     0.0074908  0.0009918   7.553 4.26e-14 ***
+          Estimate Std.Error z-ratio Pr(&gt;|z|)    
+PC1      -0.173136  0.015741 -10.999  &lt; 2e-16 ***
+PC2      -0.078112  0.026065  -2.997  0.00273 ** 
+PC3      -0.083885  0.014566  -5.759 8.47e-09 ***
+PC4      -0.080073  0.030294  -2.643  0.00821 ** 
+Temp_min  0.121829  0.014033   8.682  &lt; 2e-16 ***
+RH        0.020551  0.004182   4.914 8.93e-07 ***
+sen12     0.479006  0.046935  10.206  &lt; 2e-16 ***
+cos12    -0.517996  0.052324  -9.900  &lt; 2e-16 ***
+sen6     -0.350904  0.032407 -10.828  &lt; 2e-16 ***
+cos6     -0.054679  0.035082  -1.559  0.11909    
+Trend     0.007656  0.001027   7.457 8.82e-14 ***
 
     Null deviance: 2279.04  on 83  degrees of freedom
-Residual deviance:  404.45  on 72  degrees of freedom
-AIC: 883.479 
+Residual deviance:  402.21  on 72  degrees of freedom
+AIC: 881.9241 
 
-Number of Fisher Scoring iterations: 40
+Number of Fisher Scoring iterations: 32
 
 LRT and Wald Test:
 Alternative hypothesis: model is a GLARMA process
 Null hypothesis: model is a GLM with the same regression structure
           Statistic p-value    
-LR Test       137.7  &lt;2e-16 ***
-Wald Test     185.9  &lt;2e-16 ***
+LR Test       139.3  &lt;2e-16 ***
+Wald Test     187.4  &lt;2e-16 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
@@ -488,35 +502,35 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">1</span>))</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">acf</span>(glarma_poi<span class="sc">$</span>residuals)</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">pacf</span>(glarma_poi<span class="sc">$</span>residuals)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output-display">
-<p><img src="relatorio3_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="672"></p>
-</div>
-</div>
-<div class="cell">
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">3</span>))</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(glarma_poi)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">1</span>))</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">acf</span>(glarma_poi<span class="sc">$</span>residuals)</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="fu">pacf</span>(glarma_poi<span class="sc">$</span>residuals)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <p><img src="relatorio3_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-</section>
-<section id="negbin" class="level4">
-<h4 class="anchored" data-anchor-id="negbin">NegBin</h4>
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>glarma_nb <span class="ot">&lt;-</span> <span class="fu">glarma</span>(y, df_complicado, <span class="at">thetaLags =</span> <span class="dv">1</span>, <span class="at">phiLags =</span> <span class="cn">NULL</span>, <span class="at">type =</span> <span class="st">"NegBin"</span>,</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>                    <span class="at">method =</span> <span class="st">"FS"</span>, <span class="at">residuals=</span> <span class="st">"Pearson"</span>,</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>                    <span class="at">maxit =</span> <span class="dv">100</span>, <span class="at">grad =</span> <span class="fl">1e-6</span>)</span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(glarma_nb)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">3</span>))</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(glarma_poi)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="relatorio3_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="negbin" class="level3">
+<h3 class="anchored" data-anchor-id="negbin">NegBin</h3>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>glarma_nb <span class="ot">&lt;-</span> <span class="fu">glarma</span>(y, df_complicado, <span class="at">thetaLags =</span> <span class="dv">1</span>, <span class="at">phiLags =</span> <span class="cn">NULL</span>, <span class="at">type =</span> <span class="st">"NegBin"</span>,</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>                    <span class="at">method =</span> <span class="st">"FS"</span>, <span class="at">residuals=</span> <span class="st">"Pearson"</span>,</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>                    <span class="at">maxit =</span> <span class="dv">100</span>, <span class="at">grad =</span> <span class="fl">1e-6</span>)</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(glarma_nb)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>
@@ -569,22 +583,22 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">1</span>))</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">acf</span>(glarma_nb<span class="sc">$</span>residuals)</span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="fu">pacf</span>(glarma_nb<span class="sc">$</span>residuals)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">1</span>))</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">acf</span>(glarma_nb<span class="sc">$</span>residuals)</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="fu">pacf</span>(glarma_nb<span class="sc">$</span>residuals)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<p><img src="relatorio3_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid" width="672"></p>
+<p><img src="relatorio3_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">3</span>))</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(glarma_nb)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">3</span>))</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(glarma_nb)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<p><img src="relatorio3_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid" width="672"></p>
+<p><img src="relatorio3_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 
