@@ -1,6 +1,7 @@
 ---
 title: "relatorio3"
 toc: true
+code-fold: true
 ---
 
 ### Bibliotecas
@@ -10,6 +11,7 @@ library(corrr)
 library(ggcorrplot)
 library(FactoMineR)
 library(factoextra)
+library(glarma)
 ```
 
 ## Explorando dos dados
@@ -73,15 +75,64 @@ variancia_explicada <- summary(pca_result)$importance[2, ]  # Proporção da var
 num_componentes <- which(cumsum(variancia_explicada) >= 0.8)[1]  # 80% da variância explicada
 pca_vars <- pca_result$x[, 1:num_componentes]  # Seleciona os componentes principais
 
-```
+Trend <- 1:84
 
-```{r}
-# Suponha que sua variável resposta seja `y` (primeira coluna do conjunto de dados)
+df_complicado <- as.matrix(cbind(pca_vars, df[,8:13], Trend))
+
 y <- df[, 1]
 
-# Preparar o novo conjunto de dados
-df_pca <- data.frame(y, pca_vars)
+pca_vars
+
+```
+
+
+```{r}
+corr_matrix <- cor(df_complicado)
+ggcorrplot(corr_matrix)
+```
+
+
+## GLARMA
+
+#### Poi
+
+```{r}
+glarma_poi <- glarma(y, df_complicado, thetaLags = NULL, phiLags = 1, type = "Poi",
+                    method = "FS", residuals= "Pearson",
+                    maxit = 100, grad = 1e-6)
+
+summary(glarma_poi)
+
 ```
 
 ```{r}
+par(mfrow = c(2, 1))
+acf(glarma_poi$residuals)
+pacf(glarma_poi$residuals)
+```
+
+```{r}
+par(mfrow=c(2,3))
+plot(glarma_poi)
+```
+
+#### NegBin
+
+```{r}
+glarma_nb <- glarma(y, df_complicado, thetaLags = 1, phiLags = NULL, type = "NegBin",
+                    method = "FS", residuals= "Pearson",
+                    maxit = 100, grad = 1e-6)
+
+summary(glarma_nb)
+```
+
+```{r}
+par(mfrow = c(2, 1))
+acf(glarma_nb$residuals)
+pacf(glarma_nb$residuals)
+```
+
+```{r}
+par(mfrow=c(2,3))
+plot(glarma_nb)
 ```
