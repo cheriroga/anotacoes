@@ -1,0 +1,94 @@
+---
+title: "PCA"
+toc: true
+code-fold: true
+---
+
+```{r library, echo=F, results='hide', message=F, warning=F}
+library(corrr)
+library(ggcorrplot)
+library(FactoMineR)
+library(factoextra)
+library(glarma)
+```
+
+# Dados
+
+```{r}
+df <- read.delim("Data_CPDO.txt")
+poluentes <- cbind(df[, 2:5], df[, 7])
+```
+
+# Problema de Multicolinearidade
+
+```{r}
+corr_matrix <- cor(as.matrix(poluentes))
+ggcorrplot(corr_matrix)
+```
+
+A alta multicolinearidade das variaveis `poluentes` torna o modelo GLARMA inviável, pois afeta a estimação dos parâmetros, a estabilidade do modelo e a interpretação dos resultados.
+
+# Solução Proposta: PCA
+
+Como proposta de solução foi escolhido o metodo do PCA (transformação das variáveis originais em componentes principais) com 80% da variância explicada.
+
+```{r}
+pca_result <- prcomp(poluentes, center = TRUE, scale. = TRUE)
+
+# Selecionar os primeiros componentes principais (com base em variância explicada, por exemplo)
+variancia_explicada <- summary(pca_result)$importance[2, ]  # Proporção da variância explicada
+num_componentes <- which(cumsum(variancia_explicada) >= 0.8)[1]  # 80% da variância explicada
+pca_vars <- pca_result$x[, 1:num_componentes]  # Seleciona os componentes principais
+
+pca_vars
+```
+
+## Modelagem com os Componentes Principais
+
+```{r}
+Trend <- 1:84
+
+df_pca <- as.matrix(cbind(pca_vars, df[,8:13], Trend))
+
+y <- df[, 1]
+```
+
+No lugar das variáveis `poluentes` foi usado 3 componentes principais, juntamente com as variáveis de temperatura mínima (`Temp_min`), humidade relativa do ar (`RH`) e os indicadores de sazonalidade e tendencia.
+
+### Glarma Poisson
+
+```{r}
+glarma_poi <- glarma(y, df_pca, thetaLags = NULL, phiLags = c(6,7), type = "Poi",
+                    method = "FS", residuals= "Pearson",
+                    maxit = 100, grad = 1e-6)
+
+summary(glarma_poi)
+```
+
+```{r}
+par(mfrow=c(2,3))
+plot(glarma_poi)
+```
+
+### Glarma Binomial Negativo
+
+```{r}
+
+glarma_nb <- glarma(y, df_pca, thetaLags = 1, phiLags = NULL, type = "NegBin",
+                    method = "FS", residuals= "Pearson",
+                    maxit = 100, grad = 1e-6)
+
+summary(glarma_nb)
+```
+
+```{r}
+pacf(glarma_nb$residuals)
+acf(glarma_nb$residuals)
+```
+
+```{r}
+par(mfrow=c(2,3))
+plot(glarma_nb)
+```
+
+Esta tendo problema no no pico no lag de ambos, não sei o que fazer!!!

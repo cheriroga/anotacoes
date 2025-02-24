@@ -1,11 +1,11 @@
 ---
-title: "Relatórios IC"
+title: "Anotações IC"
 ---
 
-## Relátorios
+## Anotações
 
--   [Relatório - Casos de Poliomielite](relatorio1.qmd)
+-   [GLM Base: Poluentes](anotacoes1.qmd)
 
--   [Relatório - Indicadores Ambientais e Bronquite Aguda](relatorio2.qmd)
+-   [Primeiro Teste em GLARMA](anotacoes2.qmd)
 
--   [Relatório - PCA](relatorio3.qmd)
+-   [PCA](anotacoes3.qmd)

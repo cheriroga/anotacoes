@@ -12,7 +12,8 @@ website:
         href: about.qmd
     right:
       - icon: github
-        href: https://github.com/cheriroga/relatorios
+        href: https://github.com/cheriroga/
+
 format:
   html:
     theme: cosmo

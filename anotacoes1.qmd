@@ -1,0 +1,91 @@
+---
+title: "GLM Base: Poluentes"
+code-fold: true
+---
+
+# Bibliotecas
+
+```{r pre_requisitos, results='hide', message=F, warning=F}
+library(glarma)
+library(kableExtra)
+library(performance)
+library(MASS)
+```
+
+# Base de Dados
+
+```{r base}
+df <- read.table("Data_CPDO.txt")
+df %>% 
+  kbl() %>% 
+  kable_material(c("striped", "hover"))
+```
+
+# Variáveis
+
+```{r variaveis}
+y <- df[, 1] #bronq_aguda
+X <- as.matrix(df[, 2:13]) #poluentes e outros fatores de comparação
+```
+
+# Modelos
+
+## GLM Poisson
+
+### Ajuste do Modelo
+
+```{r}
+glm_poi <- glm(y ~ X, family = poisson(link = "log"))
+summary(glm_poi)
+```
+
+### Análise dos Resíduos
+
+```{r}
+par(mfrow = c(2, 1))
+acf(glm_poi$residuals)
+pacf(glm_poi$residuals)
+```
+
+```{r}
+par(mfrow = c(2, 2))
+plot(glm_poi)
+```
+
+```{r}
+check_overdispersion(glm_poi)
+```
+
+```{r}
+check_zeroinflation(glm_poi)
+```
+
+## GLM Binomial Negativo
+
+### Ajuste do Modelo
+
+```{r}
+glm_nb <- glm.nb(y ~ X)
+summary(glm_nb)
+```
+
+### Análise dos Resíduos
+
+```{r}
+par(mfrow = c(2, 1))
+acf(glm_nb$residuals)
+pacf(glm_nb$residuals)
+```
+
+```{r}
+par(mfrow = c(2, 2))
+plot(glm_nb)
+```
+
+```{r}
+check_overdispersion(glm_nb)
+```
+
+```{r}
+check_zeroinflation(glm_nb)
+```
