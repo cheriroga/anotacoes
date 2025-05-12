@@ -1,0 +1,107 @@
+---
+title: "anotacao 1"
+---
+
+# Bibliotecas
+
+```{r pre_requisitos, results='hide', message=F, warning=F}
+library(glarma)
+library(kableExtra)
+library(performance)
+library(MASS)
+```
+
+# Base de Dados
+
+```{r base}
+df <- read.table("Data_CPDO.txt")
+tabela <- round(df, 3)
+tabela %>% 
+  kbl() %>% 
+  kable_material(c("striped", "hover"))
+```
+
+# Variáveis
+
+```{r variaveis}
+y <- df[, 1] #bronq_aguda
+X <- as.matrix(df[, 2:13]) #poluentes e outros fatores de comparação
+```
+
+# Modelos
+
+## GLM Poisson
+
+### Ajuste do Modelo
+
+```{r}
+glm_poi <- glm(y ~ X, family = poisson(link = "log"))
+summary(glm_poi)
+```
+
+### Análise dos Resíduos
+
+```{r}
+par(mfrow = c(2, 1))
+acf(glm_poi$residuals)
+pacf(glm_poi$residuals)
+```
+
+-   O pico no lag 1 no ACF indica dependência de curto prazo nos resíduos.
+
+-   O pico no lag 6 no PACF indica dependência sazonal ou de longo prazo nos resíduos.
+
+Os picos segerem que devemos usar
+
+```{r}
+par(mfrow = c(2, 2))
+plot(glm_poi)
+```
+
+```{r}
+check_overdispersion(glm_poi)
+```
+
+```{r}
+check_zeroinflation(glm_poi)
+```
+
+O modelo apresenta sobredispersão, o que indica que a variância dos dados é maior do que a média, o que viola a suposição do modelo de Poisson.
+
+Isso pode levar a erros padrão subestimados e testes de hipóteses incorretos, para tentar corrigir os problemas usamos um modelo Binomial Negativo.
+
+## GLM Binomial Negativo
+
+### Ajuste do Modelo
+
+```{r}
+glm_nb <- glm.nb(y ~ X)
+summary(glm_nb)
+```
+
+Apresenta um AIC menor que o modelo Poisson
+
+### Análise dos Resíduos
+
+```{r}
+par(mfrow = c(2, 1))
+acf(glm_nb$residuals)
+pacf(glm_nb$residuals)
+```
+
+apresenta picos nos mesmos lags
+
+```{r}
+par(mfrow = c(2, 2))
+plot(glm_nb)
+```
+
+```{r}
+check_overdispersion(glm_nb)
+```
+
+```{r}
+check_zeroinflation(glm_nb)
+```
+
+contudo a sobredisperção foi resolvida.

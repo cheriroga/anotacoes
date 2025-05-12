@@ -12,83 +12,116 @@ library(factoextra)
 library(glarma)
 ```
 
-# Dados
+### Relatório Parcial de Iniciação Científica
+
+#### Título: Análise de Modelos GLARMA com PCA para Correção de Multicolinearidade
+
+---
+
+#### Introdução
+Esta anotação apresenta os resultados da análise de modelos **GLARMA (Generalized Linear Autoregressive Moving Average)** aplicados a dados de incidência de bronquite aguda, considerando variáveis ambientais como poluentes, temperatura mínima, umidade relativa do ar e componentes sazonais. Devido à alta multicolinearidade entre as variáveis de poluentes, foi utilizada a técnica de **Análise de Componentes Principais (PCA)** para transformar as variáveis originais em componentes principais, visando melhorar a estimação dos parâmetros e a estabilidade do modelo.
+
+---
+
+#### Metodologia
+
+##### Bibliotecas Utilizadas
+Foram utilizadas as seguintes bibliotecas no ambiente R:
+- `corrr` e `ggcorrplot`: Para análise e visualização de correlações.
+- `FactoMineR` e `factoextra`: Para realização da Análise de Componentes Principais (PCA).
+- `glarma`: Para ajuste de modelos GLARMA.
+
+##### Base de Dados
+A base de dados foi carregada a partir do arquivo `Data_CPDO.txt`, contendo informações sobre incidência de bronquite aguda, poluentes ambientais, temperatura mínima, umidade relativa do ar e componentes sazonais.
 
 ```{r}
 df <- read.delim("Data_CPDO.txt")
-poluentes <- cbind(df[, 2:5], df[, 7])
+poluentes <- cbind(df[, 2:7])
 ```
 
-# Problema de Multicolinearidade
+---
+
+#### Análise Exploratória
+
+##### Problema de Multicolinearidade
+A análise da matriz de correlação mostrou alta multicolinearidade entre as variáveis de poluentes, o que pode afetar a estimação dos parâmetros, a estabilidade do modelo e a interpretação dos resultados.
 
 ```{r}
 corr_matrix <- cor(as.matrix(poluentes))
 ggcorrplot(corr_matrix)
 ```
 
-A alta multicolinearidade das variaveis `poluentes` torna o modelo GLARMA inviável, pois afeta a estimação dos parâmetros, a estabilidade do modelo e a interpretação dos resultados.
+###### Resultados
+- A alta correlação entre as variáveis de poluentes torna inviável a inclusão direta dessas variáveis no modelo GLARMA.
 
-# Solução Proposta: PCA
+---
 
-Como proposta de solução foi escolhido o metodo do PCA (transformação das variáveis originais em componentes principais) com 80% da variância explicada.
+#### Solução Proposta: Análise de Componentes Principais (PCA)
+Para contornar o problema de multicolinearidade, foi utilizada a técnica de PCA, que transforma as variáveis originais em componentes principais não correlacionados. Foram selecionados os componentes principais que explicam 80% da variância total.
 
 ```{r}
 pca_result <- prcomp(poluentes, center = TRUE, scale. = TRUE)
-
-# Selecionar os primeiros componentes principais (com base em variância explicada, por exemplo)
 variancia_explicada <- summary(pca_result)$importance[2, ]  # Proporção da variância explicada
 num_componentes <- which(cumsum(variancia_explicada) >= 0.8)[1]  # 80% da variância explicada
 pca_vars <- pca_result$x[, 1:num_componentes]  # Seleciona os componentes principais
-
-pca_vars
 ```
 
-## Modelagem com os Componentes Principais
+###### Resultados
+- Foram selecionados **3 componentes principais** (PC1, PC2 e PC3), que explicam 80% da variância total.
+
+---
+
+#### Modelagem com Componentes Principais
+
+##### Preparação dos Dados
+Os componentes principais foram combinados com as variáveis de temperatura mínima (`Temp_min`), umidade relativa do ar (`{r}H`) e indicadores de sazonalidade e tendência.
 
 ```{r}
 Trend <- 1:84
-
-df_pca <- as.matrix(cbind(pca_vars, df[,8:13], Trend))
-
-y <- df[, 1]
+df_pca <- as.matrix(cbind(pca_vars, df[, 8:13], Trend))
+y <- df[, 1]  # Variável resposta: incidência de bronquite aguda
 ```
 
-No lugar das variáveis `poluentes` foi usado 3 componentes principais, juntamente com as variáveis de temperatura mínima (`Temp_min`), humidade relativa do ar (`RH`) e os indicadores de sazonalidade e tendencia.
+---
 
-### Glarma Poisson
+##### 1. Modelo GLARMA Poisson
+O modelo GLARMA Poisson foi ajustado para avaliar a adequação da distribuição Poisson aos dados.
 
+###### Ajuste do Modelo
 ```{r}
-glarma_poi <- glarma(y, df_pca, thetaLags = NULL, phiLags = c(6,7), type = "Poi",
-                    method = "FS", residuals= "Pearson",
-                    maxit = 100, grad = 1e-6)
-
+glarma_poi <- glarma(y, df_pca, thetaLags = NULL, phiLags = c(6, 7), type = "Poi",
+                     method = "FS", residuals = "Pearson", maxit = 100, grad = 1e-6)
 summary(glarma_poi)
 ```
 
+###### Resultados
+- **PC2**: Não foi significativa no modelo (p > 0,05).
+- **Análise dos Resíduos**:
+  - **ACF e PACF**: Pico no lag 1, indicando dependência temporal não capturada pelo modelo.
+  - **Q-Q Plot**: O modelo não se ajusta bem à normalidade, sugerindo inadequação da distribuição Poisson.
+
+---
+
+##### 2. Modelo GLARMA Binomial Negativo
+O modelo GLARMA Binomial Negativo foi ajustado para corrigir a superdispersão observada no modelo Poisson.
+
+###### Ajuste do Modelo
 ```{r}
-par(mfrow=c(2,3))
-plot(glarma_poi)
-```
-
-### Glarma Binomial Negativo
-
-```{r}
-
-glarma_nb <- glarma(y, df_pca, thetaLags = 1, phiLags = NULL, type = "NegBin",
-                    method = "FS", residuals= "Pearson",
-                    maxit = 100, grad = 1e-6)
-
+glarma_nb <- glarma(y, df_pca, thetaLags = NULL, phiLags = 6, type = "NegBin",
+                    method = "FS", residuals = "Pearson", maxit = 100, grad = 1e-6)
 summary(glarma_nb)
 ```
 
-```{r}
-pacf(glarma_nb$residuals)
-acf(glarma_nb$residuals)
-```
+###### Resultados
+- **PC2**: Também não foi significativa no modelo (p > 0,05).
+- **Análise dos Resíduos**:
+  - **ACF e PACF**: Pico no lag 1, indicando dependência temporal residual.
+  - **Q-Q Plot**: O modelo se ajusta melhor à normalidade em comparação ao modelo Poisson, mas ainda apresenta problemas nos resíduos.
 
-```{r}
-par(mfrow=c(2,3))
-plot(glarma_nb)
-```
+---
 
-Esta tendo problema no no pico no lag de ambos, não sei o que fazer!!!
+#### Conclusões Parciais
+- A técnica de PCA foi eficaz para reduzir a multicolinearidade entre as variáveis de poluentes, permitindo a inclusão de componentes principais no modelo.
+- O modelo GLARMA Binomial Negativo mostrou-se mais adequado que o modelo Poisson, corrigindo a superdispersão e apresentando melhor ajuste à normalidade.
+- A persistência de picos no lag 1 nos resíduos sugere a necessidade de ajustes adicionais na estrutura de dependência temporal do modelo.
+- A variável **PC2** não foi significativa em ambos os modelos, indicando que pode ser excluída em análises futuras.

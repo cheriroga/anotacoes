@@ -3,8 +3,6 @@ title: "GLM Base: Poluentes"
 code-fold: true
 ---
 
-# Bibliotecas
-
 ```{r pre_requisitos, results='hide', message=F, warning=F}
 library(glarma)
 library(kableExtra)
@@ -12,80 +10,119 @@ library(performance)
 library(MASS)
 ```
 
-# Base de Dados
+#### Introdução
+Este relatório apresenta os resultados parciais da análise de dados referentes à incidência de bronquite aguda (`bronq_aguda`) em relação a poluentes e outros fatores de comparação. Foram utilizados modelos estatísticos para avaliar a relação entre as variáveis, com foco em modelos **GLM Poisson** e **GLM Binomial Negativo**. O objetivo é identificar a adequação dos modelos aos dados e corrigir possíveis problemas, como sobredispersão.
 
-```{r base}
+---
+
+#### Metodologia
+
+##### Bibliotecas Utilizadas
+Foram utilizadas as seguintes bibliotecas no ambiente R:
+- `glarma`: Para análise de modelos GLARMA.
+- `kableExtra`: Para formatação de tabelas.
+- `performance`: Para diagnóstico de modelos.
+- `MASS`: Para ajuste do modelo Binomial Negativo.
+
+##### Base de Dados
+A base de dados utilizada foi carregada a partir do arquivo `Data_CPDO.txt`.
+
+```{r}
 df <- read.table("Data_CPDO.txt")
-df %>% 
+tabela <- round(df, 3)
+tabela %>% 
   kbl() %>% 
   kable_material(c("striped", "hover"))
 ```
 
-# Variáveis
+##### Variáveis
+- Variável resposta (`y`): `bronq_aguda` (incidência de bronquite aguda).
+- Variáveis explicativas (`X`): Poluentes e outros fatores de comparação (12 variáveis no total).
 
-```{r variaveis}
-y <- df[, 1] #bronq_aguda
-X <- as.matrix(df[, 2:13]) #poluentes e outros fatores de comparação
+```{r}
+y <- df[, 1] # bronq_aguda
+X <- as.matrix(df[, 2:13]) # poluentes e outros fatores
 ```
 
-# Modelos
+---
 
-## GLM Poisson
+#### Modelos Ajustados
 
-### Ajuste do Modelo
+##### 1. Modelo GLM Poisson
+O modelo Poisson foi ajustado para avaliar a relação entre a incidência de bronquite aguda e as variáveis explicativas.
 
+###### Ajuste do Modelo
 ```{r}
 glm_poi <- glm(y ~ X, family = poisson(link = "log"))
 summary(glm_poi)
 ```
 
-### Análise dos Resíduos
-
 ```{r}
-par(mfrow = c(2, 1))
-acf(glm_poi$residuals)
-pacf(glm_poi$residuals)
+plot(glarma_poi)
 ```
 
-```{r}
-par(mfrow = c(2, 2))
-plot(glm_poi)
-```
+
+###### Análise dos Resíduos
+- **ACF e PACF**: 
+  - Pico no lag 1 no ACF indica dependência de curto prazo nos resíduos.
+  - Pico no lag 6 no PACF sugere dependência sazonal ou de longo prazo.
+- **Diagnóstico de Sobredispersão**:
+  - O teste de sobredispersão indicou que a variância dos dados é maior que a média, violando a suposição do modelo Poisson.
+  - O teste de zero-inflation não indicou problemas de excesso de zeros.
 
 ```{r}
-check_overdispersion(glm_poi)
+check_overdispersion(glm_poi) # Sobredispersão presente
+check_zeroinflation(glm_poi)  # Sem excesso de zeros
 ```
 
-```{r}
-check_zeroinflation(glm_poi)
-```
+###### Conclusão
+O modelo Poisson não é adequado devido à presença de sobredispersão, o que pode levar a erros padrão subestimados e testes de hipóteses incorretos.
 
-## GLM Binomial Negativo
+---
 
-### Ajuste do Modelo
+##### 2. Modelo GLM Binomial Negativo
+Para corrigir a sobredispersão, foi ajustado um modelo Binomial Negativo.
 
+###### Ajuste do Modelo
 ```{r}
 glm_nb <- glm.nb(y ~ X)
 summary(glm_nb)
 ```
+- O modelo apresentou um **AIC menor** em comparação ao modelo Poisson, indicando melhor ajuste.
 
-### Análise dos Resíduos
+###### Análise dos Resíduos
+- **ACF e PACF**: 
+  - Picos nos mesmos lags (1 e 6) foram observados, sugerindo que a estrutura de dependência nos resíduos persiste.
+- **Diagnóstico de Sobredispersão**:
+  - A sobredispersão foi resolvida com o uso do modelo Binomial Negativo.
+  - O teste de zero-inflation não indicou problemas de excesso de zeros.
 
 ```{r}
-par(mfrow = c(2, 1))
-acf(glm_nb$residuals)
-pacf(glm_nb$residuals)
+check_overdispersion(glm_nb) # Sobredispersão resolvida
+check_zeroinflation(glm_nb)  # Sem excesso de zeros
 ```
 
+###### Conclusão
+O modelo Binomial Negativo mostrou-se mais adequado para os dados, resolvendo o problema de sobredispersão e apresentando um melhor ajuste geral.
+
+---
+
+#### Próximos Passos
+- Investigar a dependência nos resíduos (lags 1 e 6) para melhorar o ajuste do modelo.
+- Explorar a inclusão de termos autorregressivos ou de médias móveis (modelos GLARMA) para capturar a estrutura de dependência temporal.
+- Realizar validação cruzada para avaliar a robustez do modelo Binomial Negativo.
+
+---
+
+#### Considerações Finais
+Os resultados parciais indicam que o modelo Binomial Negativo é mais adequado para modelar a incidência de bronquite aguda em relação aos poluentes e fatores de comparação. A correção da sobredispersão foi um avanço significativo, mas a dependência nos resíduos ainda precisa ser abordada para melhorar a precisão do modelo.
+
+
 ```{r}
-par(mfrow = c(2, 2))
+par(mfrow = c(1, 2))
+acf(glm_nb$residuals)
+pacf(glm_nb$residuals)
+
 plot(glm_nb)
 ```
 
-```{r}
-check_overdispersion(glm_nb)
-```
-
-```{r}
-check_zeroinflation(glm_nb)
-```
